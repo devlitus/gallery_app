@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gallery_app/bloc/screen_bloc.dart';
+import 'package:provider/provider.dart';
 
 class CustomFloatingButton extends StatelessWidget {
   const CustomFloatingButton({
@@ -7,6 +9,7 @@ class CustomFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenBloc screenBloc = Provider.of<ScreenBloc>(context);
     return FloatingActionButton.extended(
       isExtended: true,
       label: Row(
@@ -17,11 +20,15 @@ class CustomFloatingButton extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.grid_on),
-            onPressed: () {},
+            onPressed: () {
+              screenBloc.isGrid = true;
+            },
           ),
           IconButton(
             icon: Icon(Icons.list),
-            onPressed: () {},
+            onPressed: () {
+              screenBloc.isGrid = false;
+            },
           )
         ],
       ),

@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:gallery_app/bloc/screen_bloc.dart';
 
 import 'package:gallery_app/screens/home_screen.dart';
 import 'package:gallery_app/screens/product_screen.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => ScreenBloc()),
+    ],
+     child: MyApp())
+  );
+}
 
 class MyApp extends StatelessWidget {
   @override
