@@ -11,23 +11,17 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0)),
-          margin: EdgeInsets.all(10.0),
-          clipBehavior: Clip.antiAlias,
-          child: Row(
+    return GestureDetector(
+      child: Column(
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment:
-            MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               (product.imgUrl == null)
                   ? Image.asset('assets/no-image.jpeg')
                   : ClipRRect(
-                borderRadius:
-                BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(8.0),
                 child: FadeInImage.assetNetwork(
                   placeholder: 'assets/bools.gif',
                   image: product.imgUrl,
@@ -36,18 +30,19 @@ class ListItem extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
+              SizedBox(height: 15.0),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Text(
                   product.title,
-                  style:
-                  Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
+      onTap: () => Navigator.pushNamed(context, 'product', arguments: product),
     );
   }
 }

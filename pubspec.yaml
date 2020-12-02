@@ -32,6 +32,8 @@ dependencies:
   image_picker:
   provider:
   rxdart:
+  mime_type:
+  cloudinary_sdk: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:

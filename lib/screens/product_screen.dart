@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:gallery_app/bloc/product_bloc.dart';
 import 'package:gallery_app/models/product_model.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,10 +16,13 @@ class _ProductScreenState extends State<ProductScreen> {
   File _fileImage;
   ImagePicker _picker = ImagePicker();
   ProductModel _productModel = ProductModel();
+  ProductBloc _productBloc = ProductBloc();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final prodData = ModalRoute.of(context).settings.arguments;
+    if (prodData != null) _productModel = prodData;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -26,7 +31,7 @@ class _ProductScreenState extends State<ProductScreen> {
         ],
       ),
       body: Container(
-        margin: EdgeInsets.only(top: 20.0),
+        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -42,24 +47,24 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget _showImage() {
     if (_productModel.imgUrl != null) {
       return ClipRRect(
-        clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(10.0),
-        child: FadeInImage.assetNetwork(
-          height: 200,
-          placeholder: 'assets/bools.gif',
-          image: _productModel.imgUrl,
-        ),
-      );
+          clipBehavior: Clip.antiAlias,
+          borderRadius: BorderRadius.circular(10.0),
+          child: FadeInImage(
+            fit: BoxFit.cover,
+            placeholder: AssetImage('assets/bools.gif'),
+            image: (_fileImage?.path == null)
+                ? NetworkImage(_productModel.imgUrl)
+                : FileImage(_fileImage),
+          ));
     }
     return ClipRRect(
       clipBehavior: Clip.antiAlias,
       borderRadius: BorderRadius.circular(10.0),
       child: FadeInImage(
-        // height: 200,
         placeholder: AssetImage('assets/bools.gif'),
         image: (_fileImage?.path == null)
             ? AssetImage('assets/no-image.jpeg')
-            : FileImage(_fileImage, scale: 4.0),
+            : FileImage(_fileImage),
       ),
     );
   }
@@ -77,6 +82,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 labelText: 'Nombre',
                 hintText: 'Nombre de la imagen',
               ),
+              initialValue: _productModel.title,
               onSaved: (value) => _productModel.title = value,
               validator: (value) =>
                   value.isEmpty ? 'No puede estar vacío' : null,
@@ -87,7 +93,7 @@ class _ProductScreenState extends State<ProductScreen> {
             RaisedButton.icon(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 20.0),
               color: Colors.green,
               textColor: Color(0xffffffff),
               icon: Icon(Icons.send),
@@ -100,12 +106,19 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  void _submit() {
+
+  void _submit() async {
     if (!_formKey.currentState.validate()) return;
     _formKey.currentState.save();
-    print(_productModel.title);
+    if (_fileImage != null) {
+      _productModel.imgUrl = await _productBloc.uploadImage(_fileImage);
+    }
+    (_productModel.id == null)
+        ? _productBloc.addProduct(_productModel)
+        : _productBloc.editProduct(_productModel);
     // FocusScope.of(context).requestFocus(new FocusNode());
-    // Navigator.of(context).pushNamed('home');
+    // _productBloc.loadingProduct();
+    Navigator.of(context).pushNamed('home');
   }
 
   void _album() {
@@ -122,7 +135,7 @@ class _ProductScreenState extends State<ProductScreen> {
       _fileImage = File(photo?.path);
       if (_fileImage.path == null) _productModel.imgUrl = null;
     } catch (e) {
-      print('error $e');
+      print('error: $e');
     }
     setState(() {});
   }
