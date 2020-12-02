@@ -28,25 +28,64 @@ class GridItem extends StatelessWidget {
                   product.title,
                   style: TextStyle(fontSize: 20.0),
                 ),
-                IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => _delete(product))
+                Expanded(
+                  child: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _delete(context, product)),
+                )
               ],
             ),
           ),
         ),
         child: ClipRRect(
-            clipBehavior: Clip.antiAlias,
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.network(product.imgUrl, fit: BoxFit.cover),
+          clipBehavior: Clip.antiAlias,
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.network(product.imgUrl, fit: BoxFit.cover),
         ),
       ),
       onTap: () => Navigator.pushNamed(context, 'product', arguments: product),
     );
   }
 
-  void _delete(ProductModel product) {
+  Future _delete(BuildContext context, ProductModel product) {
     ProductBloc productBloc = ProductBloc();
-    productBloc.deleteProduct(product);
+    return showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0),
+          topRight: Radius.circular(10.0),
+        )),
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 130.0,
+            child: Column(
+              children: [
+                Text('Seguro que quieres eliminarlo', style: Theme.of(context).textTheme.headline5,),
+                Container(
+                  margin: EdgeInsets.only(right: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RawMaterialButton(
+                        fillColor: Colors.green,
+                        child: Text('Aceptar'),
+                        onPressed: () {
+                          productBloc.deleteProduct(product);
+                          Navigator.pushNamed(context, 'home');
+                        },
+                      ),
+                      RawMaterialButton(
+                        fillColor: Colors.red,
+                        child: Text('Cancelar'),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 }
