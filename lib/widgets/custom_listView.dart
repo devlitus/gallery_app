@@ -46,7 +46,7 @@ class _ViewListState extends State<ViewList> {
                     onDismissed: (direction) {
                       setState(() {
                         _productBloc.deleteProduct(product[index]);
-                        Navigator.pushNamed(context, 'home');
+                        _productBloc.loadingProduct();
                       });
                     });
               },

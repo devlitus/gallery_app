@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/bloc/product_bloc.dart';
 import 'package:gallery_app/models/product_model.dart';
+import 'package:gallery_app/widgets/customItemGrid_widget.dart';
 
-import 'customItemGrid_widget.dart';
-
-class Grid extends StatefulWidget {
-  @override
-  _GridState createState() => _GridState();
-}
-
-class _GridState extends State<Grid> {
-  ProductBloc _productBloc = ProductBloc();
-
-  @override
-  void initState() {
-    super.initState();
-    _productBloc.loadingProduct();
-  }
+class Grid extends StatelessWidget {
+  final List<ProductModel> product;
+  Grid({Key key, @required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return Container(
+      child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 4,
+            mainAxisSpacing: 4,
+          ),
+          itemBuilder: (context, int index) {
+            return GridItem(product: product[index]);
+          },
+          itemCount: product.length,
+          ),
+
+    );
+  }
+}
+
+/* StreamBuilder(
         stream: _productBloc.productStream,
         builder:
             (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
@@ -47,6 +52,4 @@ class _GridState extends State<Grid> {
             );
           }
           return Center(child: CircularProgressIndicator());
-        });
-  }
-}
+        }); */

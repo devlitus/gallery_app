@@ -106,7 +106,6 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-
   void _submit() async {
     if (!_formKey.currentState.validate()) return;
     _formKey.currentState.save();
@@ -118,7 +117,7 @@ class _ProductScreenState extends State<ProductScreen> {
         : _productBloc.editProduct(_productModel);
     // FocusScope.of(context).requestFocus(new FocusNode());
     // _productBloc.loadingProduct();
-    Navigator.of(context).pushNamed('home');
+    Navigator.of(context).pop();
   }
 
   void _album() {

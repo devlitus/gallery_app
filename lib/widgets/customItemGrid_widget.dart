@@ -21,19 +21,8 @@ class GridItem extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: GridTileBar(
             backgroundColor: Colors.black45,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  product.title,
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                Expanded(
-                  child: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () => _delete(context, product)),
-                )
-              ],
+            title: Container(
+              child: Text(product.title),
             ),
           ),
         ),
@@ -61,7 +50,10 @@ class GridItem extends StatelessWidget {
             height: 130.0,
             child: Column(
               children: [
-                Text('Seguro que quieres eliminarlo', style: Theme.of(context).textTheme.headline5,),
+                Text(
+                  'Seguro que quieres eliminarlo',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
                 Container(
                   margin: EdgeInsets.only(right: 20.0),
                   child: Row(
