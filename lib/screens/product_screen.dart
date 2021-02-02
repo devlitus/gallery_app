@@ -51,7 +51,7 @@ class _ProductScreenState extends State<ProductScreen> {
           borderRadius: BorderRadius.circular(10.0),
           child: FadeInImage(
             fit: BoxFit.cover,
-            placeholder: AssetImage('assets/bools.gif'),
+            placeholder: AssetImage('assets/images/bools.gif'),
             image: (_fileImage?.path == null)
                 ? NetworkImage(_productModel.imgUrl)
                 : FileImage(_fileImage),
@@ -61,9 +61,9 @@ class _ProductScreenState extends State<ProductScreen> {
       clipBehavior: Clip.antiAlias,
       borderRadius: BorderRadius.circular(10.0),
       child: FadeInImage(
-        placeholder: AssetImage('assets/bools.gif'),
+        placeholder: AssetImage('assets/images/bools.gif'),
         image: (_fileImage?.path == null)
-            ? AssetImage('assets/no-image.jpeg')
+            ? AssetImage('assets/images/no-image.jpeg')
             : FileImage(_fileImage),
       ),
     );
