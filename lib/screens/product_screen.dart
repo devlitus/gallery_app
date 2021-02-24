@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:gallery_app/bloc/product/product_bloc.dart';
+import 'package:gallery_app/models/product_model.dart';
 import 'package:gallery_app/services/product_service.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -118,7 +119,7 @@ class ProductScreen extends StatelessWidget {
                     textColor: Color(0xffffffff),
                     icon: Icon(Icons.send),
                     label: Text('Guardar'),
-                    onPressed: () => _submit(context, _formKey),
+                    onPressed: () => _submit(context, _formKey, product),
                   )
                 ],
               ),
@@ -127,19 +128,20 @@ class ProductScreen extends StatelessWidget {
         ));
   }
 
-  void _submit(BuildContext contex, GlobalKey<FormState> _formkey) async {
-    final state = contex.read<ProductBloc>().state;
+  void _submit(BuildContext contex, GlobalKey<FormState> _formkey,
+      ProductModel product) async {
     final productService = ProductService();
     if (!_formkey.currentState.validate()) return;
-    if (!state.product.imgUrl.contains('https')) {
-      final image =
-          await productService.uploadImage(File(state.product.imgUrl));
-      state.product.imgUrl = image;
+    if (!product.imgUrl.contains('https')) {
+      final image = await productService.uploadImage(File(product.imgUrl));
+      product.imgUrl = image;
     }
     _formkey.currentState.save();
-    if (state.product.id == null) productService.createProduct(state.product);
-    print(state.product.title);
-    print(state.product.imgUrl);
+    (product.id == null)
+        ? productService.createProduct(product)
+        : productService.editProduct(product);
+    contex.read<ProductBloc>().add(OnGetListProducts());
+    Navigator.pop(contex);
   }
 
   void _album(BuildContext context) {

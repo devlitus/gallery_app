@@ -9,6 +9,8 @@ class OngetProduct extends ProductEvent {
   OngetProduct({this.product});
 }
 
+class OnGetListProducts extends ProductEvent {}
+
 class OnAddImageAlbum extends ProductEvent {
   final File fileImage;
 

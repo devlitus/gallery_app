@@ -12,12 +12,15 @@ part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc() : super(ProductInitial());
-
+  final ProductService productService = ProductService();
   @override
   Stream<ProductState> mapEventToState(ProductEvent event) async* {
     switch (event.runtimeType) {
       case OngetProduct:
         yield* _getProduct(event);
+        break;
+      case OnGetListProducts:
+        yield* _getListProduct(event);
         break;
       case OnAddImageAlbum:
         yield* _addImageAlbum(event);
@@ -31,6 +34,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   Stream<ProductState> _getProduct(OngetProduct event) async* {
     yield state.copyWith(product: event.product);
+  }
+
+  Stream<ProductState> _getListProduct(OnGetListProducts event) async* {
+    final products = await this.productService.getProduct();
+    yield state.copyWith(products: products);
   }
 
   Stream<ProductState> _addImageAlbum(OnAddImageAlbum event) async* {
