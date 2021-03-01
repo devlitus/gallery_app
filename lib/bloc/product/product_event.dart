@@ -17,8 +17,13 @@ class OnAddImageAlbum extends ProductEvent {
   OnAddImageAlbum({this.fileImage});
 }
 
-class OnChangeTitle extends ProductEvent {
-  final String title;
+class OnDeleteItemProduct extends ProductEvent {
+  final ProductModel productCheck;
+  OnDeleteItemProduct(this.productCheck);
+}
 
-  OnChangeTitle(this.title);
+class OnIsCheked extends ProductEvent {
+  final bool checked;
+
+  OnIsCheked(this.checked);
 }

@@ -7,9 +7,13 @@ import 'package:gallery_app/widgets/custom_grid.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    context.read<ProductBloc>().add(OnGetListProducts());
     return Scaffold(
       appBar: AppBar(
         title: Text("Gallery"),
+        actions: [
+          _delete(context),
+        ],
       ),
       body: CustomGrid(),
       floatingActionButton: FloatingActionButton(
@@ -22,5 +26,17 @@ class HomeScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _delete(BuildContext context) {
+    final delete = context.read<ProductBloc>().state;
+    print('delete: ${delete.product?.check}');
+    if (delete.product?.check ?? false) {
+      return IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () {},
+      );
+    }
+    return Container();
   }
 }

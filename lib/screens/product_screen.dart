@@ -88,44 +88,45 @@ class ProductScreen extends StatelessWidget {
   Widget _dataProduct() {
     final _formKey = GlobalKey<FormState>();
     return Container(
-        margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-        child: BlocBuilder<ProductBloc, ProductState>(
-          builder: (context, state) {
-            final product = state.product;
-            return Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      labelText: 'Nombre',
-                      hintText: 'Nombre de la imagen',
-                    ),
-                    initialValue: product.title,
-                    onSaved: (value) => product.title = value,
-                    validator: (value) =>
-                        value.isEmpty ? 'No puede estar vacío' : null,
+      margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+      child: BlocBuilder<ProductBloc, ProductState>(
+        builder: (context, state) {
+          final product = state.product;
+          return Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: 'Nombre',
+                    hintText: 'Nombre de la imagen',
                   ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  RaisedButton.icon(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 7.0, horizontal: 20.0),
-                    color: Colors.green,
-                    textColor: Color(0xffffffff),
-                    icon: Icon(Icons.send),
-                    label: Text('Guardar'),
-                    onPressed: () => _submit(context, _formKey, product),
-                  )
-                ],
-              ),
-            );
-          },
-        ));
+                  initialValue: product.title,
+                  onSaved: (value) => product.title = value,
+                  validator: (value) =>
+                      value.isEmpty ? 'No puede estar vacío' : null,
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                RaisedButton.icon(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 7.0, horizontal: 20.0),
+                  color: Colors.green,
+                  textColor: Color(0xffffffff),
+                  icon: Icon(Icons.send),
+                  label: Text('Guardar'),
+                  onPressed: () => _submit(context, _formKey, product),
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
   void _submit(BuildContext contex, GlobalKey<FormState> _formkey,

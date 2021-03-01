@@ -25,9 +25,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       case OnAddImageAlbum:
         yield* _addImageAlbum(event);
         break;
-      case OnChangeTitle:
-        yield* _changeTitle(event);
+      case OnDeleteItemProduct:
+        yield* _deleteItemProduct(event);
         break;
+
       default:
     }
   }
@@ -52,8 +53,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     yield state.copyWith(product: state.product);
   }
 
-  Stream<ProductState> _changeTitle(OnChangeTitle event) async* {
-    state.product.title = event.title;
-    yield state.copyWith(product: state.product);
+  Stream<ProductState> _deleteItemProduct(OnDeleteItemProduct event) async* {
+    final ProductModel productModel = ProductModel();
+    productModel.check = event.productCheck.check;
+    print('producto: ${event.productCheck.check}');
+    state.copyWith(product: productModel);
   }
 }

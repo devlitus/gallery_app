@@ -46,4 +46,11 @@ class ProductService {
     final decodedDate = json.decode(resp.body);
     return true;
   }
+
+  Future<bool> deleteProduct(ProductModel product) async {
+    await http.delete('$_url/productos/${product.id}.json');
+    await _cloudinary.deleteFile(
+        url: product.imgUrl, resourceType: CloudinaryResourceType.image);
+    return true;
+  }
 }

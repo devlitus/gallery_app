@@ -11,7 +11,6 @@ class CustomGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<ProductBloc>().add(OnGetListProducts());
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         final products = state.products;
@@ -29,7 +28,7 @@ class CustomGrid extends StatelessWidget {
                   mainAxisSpacing: 4,
                 ),
                 itemBuilder: (context, int index) {
-                  return GridItem(product: products[index]);
+                  return GridItem(product: products[index], index: index);
                 },
                 itemCount: products.length,
               ),
@@ -46,64 +45,76 @@ class CustomGrid extends StatelessWidget {
   }
 }
 
-class GridItem extends StatelessWidget {
+class GridItem extends StatefulWidget {
   final ProductModel product;
+  final int index;
+  const GridItem({Key key, @required this.product, this.index})
+      : super(key: key);
 
-  const GridItem({Key key, @required this.product}) : super(key: key);
+  @override
+  _GridItemState createState() => _GridItemState();
+}
 
+class _GridItemState extends State<GridItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: GridTile(
-        footer: Material(
-          color: Colors.transparent,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          clipBehavior: Clip.antiAlias,
-          child: GridTileBar(
-            backgroundColor: Colors.black45,
-            title: Container(
-              child: Text(product.title),
+      child: Stack(
+        children: [
+          GridTile(
+            footer: Material(
+              color: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0)),
+              clipBehavior: Clip.antiAlias,
+              child: GridTileBar(
+                backgroundColor: Colors.black45,
+                title: Container(
+                  child: Text(widget.product.title),
+                ),
+              ),
+            ),
+            child: ClipRRect(
+              clipBehavior: Clip.antiAlias,
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                widget.product.imgUrl,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        child: ClipRRect(
-          clipBehavior: Clip.antiAlias,
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(product.imgUrl, fit: BoxFit.cover),
-        ),
+          (this.widget.product.check ?? false) ? _checked() : Container(),
+        ],
       ),
       onTap: () {
         BlocProvider.of<ProductBloc>(context)
-            .add(OngetProduct(product: product));
+            .add(OngetProduct(product: widget.product));
         Navigator.pushNamed(context, 'product');
       },
+      onLongPress: () => _checkered(context),
+    );
+  }
+
+  _checkered(BuildContext context) async {
+    setState(() {
+      widget.product.check = true;
+      context.read<ProductBloc>()..add(OnDeleteItemProduct(widget.product));
+    });
+  }
+
+  Container _checked() {
+    return Container(
+      width: 25.0,
+      height: 25.0,
+      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.blue[400]),
+          shape: BoxShape.circle),
+      child: Icon(
+        Icons.check,
+        color: Colors.blue[800],
+      ),
     );
   }
 }
-
-/* return FutureBuilder(
-      future: product.getProduct(),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
-        if (snapshot.hasData) {
-          final prod = snapshot.data;
-          print('Future: ${prod[0].title}');
-          return Container(
-            margin: EdgeInsets.all(15.0),
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 4,
-                mainAxisSpacing: 4,
-              ),
-              itemBuilder: (context, int index) {
-                return GridItem(product: prod[index]);
-              },
-              itemCount: prod.length,
-            ),
-          );
-        }
-        return Center(child: CircularProgressIndicator());
-      },
-    ); */
