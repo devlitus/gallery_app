@@ -30,6 +30,19 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Gallery"),
+        actions: [
+          _delete(context),
+        ],
+      ),
+      body: CustomGrid(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          final ProductModel product = ProductModel();
+          BlocProvider.of<ProductBloc>(context)
+              .add(OngetProduct(product: product));
+          Navigator.pushNamed(context, 'product');
+        },
       ),
       body: Container(
         child: layoutType(_screenBloc.isGrid),

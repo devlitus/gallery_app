@@ -7,13 +7,23 @@ import 'package:gallery_app/models/product_model.dart';
 
 class ProductService {
   final _url = "https://flutter-varios-76cb4.firebaseio.com";
+<<<<<<< HEAD
   final _cloudinary = Cloudinary('119358423775835', 'A3XEnIkTXAwVqIArCwHMU34iorE', 'djhxmjnb4');
   
+=======
+  final _cloudinary =
+      Cloudinary('119358423775835', 'A3XEnIkTXAwVqIArCwHMU34iorE', 'djhxmjnb4');
+
+>>>>>>> dev-bloc
   Future<List<ProductModel>> getProduct() async {
     final resp = await http.get('$_url/productos.json');
     final Map<String, dynamic> decodedData = json.decode(resp.body);
     final List<ProductModel> products = List();
+<<<<<<< HEAD
     if(decodedData?.isEmpty ?? true ) return [];
+=======
+    if (decodedData?.isEmpty ?? true) return [];
+>>>>>>> dev-bloc
     decodedData.forEach((key, value) {
       final prodTemp = ProductModel.fromJson(value);
       prodTemp.id = key;
