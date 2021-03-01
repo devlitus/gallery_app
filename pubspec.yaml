@@ -33,9 +33,7 @@ dependencies:
   bloc: ^6.1.1
   flutter_bloc: ^6.1.1
   cloudinary_sdk: ^1.0.3+4
-  dependencies:
   liquid_pull_to_refresh: ^2.0.0
-
 
 dev_dependencies:
   flutter_test:
