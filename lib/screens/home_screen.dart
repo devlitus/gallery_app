@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           final ProductModel product = ProductModel();
           BlocProvider.of<ProductBloc>(context)
-              .add(OngetProduct(product: product));
+              .add(OnGetProduct(product: product));
           Navigator.pushNamed(context, 'product');
         },
       ),
@@ -29,14 +29,28 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _delete(BuildContext context) {
-    final delete = context.read<ProductBloc>().state;
-    print('delete: ${delete.product?.check}');
-    if (delete.product?.check ?? false) {
-      return IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: () {},
-      );
-    }
-    return Container();
+    return BlocBuilder<ProductBloc, ProductState>(
+      builder: (context, state) {
+        if (state.product?.check ?? false) {
+          return IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {},
+          );
+        }
+        return Container();
+      },
+    );
   }
 }
+
+/*final delete = context.read<ProductBloc>().state;
+
+print('delete: ${delete.product?.check}');
+
+if (delete.product?.check ?? false) {
+return IconButton(
+icon: Icon(Icons.delete),
+onPressed: () {},
+);
+}
+return Container();*/

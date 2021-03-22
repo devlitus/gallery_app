@@ -8,15 +8,17 @@ import 'package:meta/meta.dart';
 import 'package:gallery_app/models/product_model.dart';
 
 part 'product_event.dart';
+
 part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc() : super(ProductInitial());
   final ProductService productService = ProductService();
+
   @override
   Stream<ProductState> mapEventToState(ProductEvent event) async* {
     switch (event.runtimeType) {
-      case OngetProduct:
+      case OnGetProduct:
         yield* _getProduct(event);
         break;
       case OnGetListProducts:
@@ -33,7 +35,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  Stream<ProductState> _getProduct(OngetProduct event) async* {
+  Stream<ProductState> _getProduct(OnGetProduct event) async* {
     yield state.copyWith(product: event.product);
   }
 
@@ -54,9 +56,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   Stream<ProductState> _deleteItemProduct(OnDeleteItemProduct event) async* {
-    final ProductModel productModel = ProductModel();
-    productModel.check = event.productCheck.check;
-    print('producto: ${event.productCheck.check}');
-    state.copyWith(product: productModel);
+    // final productChecked = event.productCheck.toJson();
+
+    yield state.copyWith(product: event.productCheck);
   }
 }

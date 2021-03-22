@@ -3,10 +3,10 @@ part of 'product_bloc.dart';
 @immutable
 abstract class ProductEvent {}
 
-class OngetProduct extends ProductEvent {
+class OnGetProduct extends ProductEvent {
   final ProductModel product;
 
-  OngetProduct({this.product});
+  OnGetProduct({this.product});
 }
 
 class OnGetListProducts extends ProductEvent {}
@@ -19,11 +19,12 @@ class OnAddImageAlbum extends ProductEvent {
 
 class OnDeleteItemProduct extends ProductEvent {
   final ProductModel productCheck;
-  OnDeleteItemProduct(this.productCheck);
+
+  OnDeleteItemProduct({this.productCheck});
 }
 
-class OnIsCheked extends ProductEvent {
+class OnIsChecked extends ProductEvent {
   final bool checked;
 
-  OnIsCheked(this.checked);
+  OnIsChecked(this.checked);
 }
