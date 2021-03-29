@@ -16,7 +16,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   @override
   Stream<ProductState> mapEventToState(ProductEvent event) async* {
     switch (event.runtimeType) {
-      case OngetProduct:
+      case OnGetProduct:
         yield* _getProduct(event);
         break;
       case OnGetListProducts:
@@ -33,7 +33,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  Stream<ProductState> _getProduct(OngetProduct event) async* {
+  Stream<ProductState> _getProduct(OnGetProduct event) async* {
     yield state.copyWith(product: event.product);
   }
 

@@ -80,7 +80,7 @@ class GridItem extends StatelessWidget {
       ),
       onTap: () {
         BlocProvider.of<ProductBloc>(context)
-            .add(OngetProduct(product: product));
+            .add(OnGetProduct(product: product));
         Navigator.pushNamed(context, 'product');
       },
       onLongPress: () => _checkered(context),

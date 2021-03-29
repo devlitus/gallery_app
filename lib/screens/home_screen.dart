@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           final ProductModel product = ProductModel();
           BlocProvider.of<ProductBloc>(context)
-              .add(OngetProduct(product: product));
+              .add(OnGetProduct(product: product));
           Navigator.pushNamed(context, 'product');
         },
       ),
@@ -39,11 +39,36 @@ class _HomeScreenState extends State<HomeScreen> {
         if (state.product?.check ?? false) {
           return IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () {},
+            onPressed: () => _showDialog(context),
           );
         }
         return Container();
       },
+    );
+  }
+
+  Future<void> _showDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Eliminar Imagen !!!'),
+          content: Text('¿Seguro que quieres eliminarlo estas imagenes?'),
+          actions: [
+            Row(
+              children: [
+                TextButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child: Text('SI')),
+                TextButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child: Text('NO')),
+              ],
+            )
+          ],
+        );
+      }
     );
   }
 }
