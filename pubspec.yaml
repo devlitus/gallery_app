@@ -30,8 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.0
   http: ^0.12.2
   image_picker: ^0.6.7+22
-  bloc: ^6.1.1
-  flutter_bloc: ^6.1.1
+  bloc: ^7.0.0
+  flutter_bloc: ^7.0.0
   cloudinary_sdk: ^1.0.3+4
   liquid_pull_to_refresh: ^2.0.0
 

@@ -110,17 +110,20 @@ class ProductScreen extends StatelessWidget {
                 SizedBox(
                   height: 20.0,
                 ),
-                RaisedButton.icon(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 7.0, horizontal: 20.0),
-                  color: Colors.green,
-                  textColor: Color(0xffffffff),
-                  icon: Icon(Icons.send),
-                  label: Text('Guardar'),
+                OutlinedButton.icon(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0))),
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                        EdgeInsets.symmetric(horizontal: 30.0)),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.green[300]),
+                  ),
+                  icon: Icon(Icons.send, color: Colors.white),
+                  label: Text('enviar', style: TextStyle(color: Colors.white)),
                   onPressed: () => _submit(context, _formKey, product),
-                )
+                ),
               ],
             ),
           );
@@ -129,7 +132,7 @@ class ProductScreen extends StatelessWidget {
     );
   }
 
-  void _submit(BuildContext contex, GlobalKey<FormState> _formkey,
+  void _submit(BuildContext context, GlobalKey<FormState> _formkey,
       ProductModel product) async {
     final productService = ProductService();
     if (!_formkey.currentState.validate()) return;
@@ -141,8 +144,8 @@ class ProductScreen extends StatelessWidget {
     (product.id == null)
         ? productService.createProduct(product)
         : productService.editProduct(product);
-    contex.read<ProductBloc>().add(OnGetListProducts());
-    Navigator.pop(contex);
+    context.read<ProductBloc>().add(OnGetListProducts());
+    Navigator.pop(context);
   }
 
   void _album(BuildContext context) {
@@ -164,3 +167,14 @@ class ProductScreen extends StatelessWidget {
     }
   }
 }
+
+
+
+
+
+// shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(20.0)),
+//                   padding:
+//                       EdgeInsets.symmetric(vertical: 7.0, horizontal: 20.0),
+//                   color: Colors.green,
+//                   textColor: Color(0xffffffff),
