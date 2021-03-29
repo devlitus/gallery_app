@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:gallery_app/bloc/product/product_bloc.dart';
 import 'package:gallery_app/models/product_model.dart';
-// import 'package:gallery_app/services/product_service.dart';
 
 class CustomGrid extends StatelessWidget {
   const CustomGrid({Key key}) : super(key: key);
@@ -28,7 +27,7 @@ class CustomGrid extends StatelessWidget {
                   mainAxisSpacing: 4,
                 ),
                 itemBuilder: (context, int index) {
-                  return GridItem(product: products[index], index: index);
+                  return GridItem(product: products[index]);
                 },
                 itemCount: products.length,
               ),
@@ -45,17 +44,10 @@ class CustomGrid extends StatelessWidget {
   }
 }
 
-class GridItem extends StatefulWidget {
+class GridItem extends StatelessWidget {
   final ProductModel product;
-  final int index;
-  const GridItem({Key key, @required this.product, this.index})
-      : super(key: key);
+  const GridItem({@required this.product});
 
-  @override
-  _GridItemState createState() => _GridItemState();
-}
-
-class _GridItemState extends State<GridItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -70,7 +62,7 @@ class _GridItemState extends State<GridItem> {
               child: GridTileBar(
                 backgroundColor: Colors.black45,
                 title: Container(
-                  child: Text(widget.product.title),
+                  child: Text(product.title),
                 ),
               ),
             ),
@@ -78,17 +70,17 @@ class _GridItemState extends State<GridItem> {
               clipBehavior: Clip.antiAlias,
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
-                widget.product.imgUrl,
+                product.imgUrl,
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          (this.widget.product.check ?? false) ? _checked() : Container(),
+          (product.check ?? false) ? _checked() : Container(),
         ],
       ),
       onTap: () {
         BlocProvider.of<ProductBloc>(context)
-            .add(OngetProduct(product: widget.product));
+            .add(OngetProduct(product: product));
         Navigator.pushNamed(context, 'product');
       },
       onLongPress: () => _checkered(context),
@@ -96,10 +88,9 @@ class _GridItemState extends State<GridItem> {
   }
 
   _checkered(BuildContext context) async {
-    setState(() {
-      widget.product.check = true;
-      context.read<ProductBloc>()..add(OnDeleteItemProduct(widget.product));
-    });
+    product.check = true;
+    print('custom ${product.check}');
+    context.read<ProductBloc>().add(OnDeleteItemProduct(product));
   }
 
   Container _checked() {

@@ -22,7 +22,6 @@ class ProductInitial extends ProductState {
   final ProductModel product;
   final List<ProductModel> products;
   final String id;
-
   ProductInitial({
     this.product,
     this.products,

@@ -25,7 +25,7 @@ class ProductModel {
     String title,
     String imgUrl,
     bool favorite,
-    bool check,
+    bool check = false,
   }) =>
       ProductModel(
         id: id ?? this.id,
