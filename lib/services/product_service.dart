@@ -13,7 +13,7 @@ class ProductService {
   Future<List<ProductModel>> getProduct() async {
     final resp = await http.get('$_url/productos.json');
     final Map<String, dynamic> decodedData = json.decode(resp.body);
-    final List<ProductModel> products = List();
+    final List<ProductModel> products = [];
     if (decodedData?.isEmpty ?? true) return [];
     decodedData.forEach((key, value) {
       final prodTemp = ProductModel.fromJson(value);
@@ -49,8 +49,21 @@ class ProductService {
 
   Future<bool> deleteProduct(ProductModel product) async {
     await http.delete('$_url/productos/${product.id}.json');
-    await _cloudinary.deleteFile(
-        url: product.imgUrl, resourceType: CloudinaryResourceType.image);
+    // await _cloudinary.deleteFile(
+    //     url: product.imgUrl, resourceType: CloudinaryResourceType.image);
     return true;
+  }
+
+  Future<bool> deletesImage(List<String> images) async {
+    final response = await _cloudinary.deleteFiles(
+      urls: images,
+      resourceType: CloudinaryResourceType.image,
+    );
+    if (response.isSuccessful ?? false) {
+      Map<String, dynamic> deleted = response.deleted;
+      print(deleted);
+      return true;
+    }
+    return false;
   }
 }

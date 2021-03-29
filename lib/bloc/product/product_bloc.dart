@@ -14,7 +14,7 @@ part 'product_state.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc() : super(ProductInitial());
   final ProductService productService = ProductService();
-
+  final List<ProductModel> itemChecked = [];
   @override
   Stream<ProductState> mapEventToState(ProductEvent event) async* {
     switch (event.runtimeType) {
@@ -27,10 +27,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       case OnAddImageAlbum:
         yield* _addImageAlbum(event);
         break;
+      case OnIsChecked:
+        yield* _isChecked(event);
+        break;
       case OnDeleteItemProduct:
         yield* _deleteItemProduct(event);
         break;
-
       default:
     }
   }
@@ -55,9 +57,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     yield state.copyWith(product: state.product);
   }
 
-  Stream<ProductState> _deleteItemProduct(OnDeleteItemProduct event) async* {
-    // final productChecked = event.productCheck.toJson();
-
+  Stream<ProductState> _isChecked(OnIsChecked event) async* {
+    print(event.productCheck.toJson());
     yield state.copyWith(product: event.productCheck);
+  }
+
+  Stream<ProductState> _deleteItemProduct(OnDeleteItemProduct event) async* {
+    final bool check = event.product.check;
+    if (check) {
+      itemChecked.add(event.product);
+    } else {
+      itemChecked.remove(event.product);
+    }
+    yield state.copyWith(deleteProduct: itemChecked);
   }
 }

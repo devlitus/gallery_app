@@ -96,7 +96,8 @@ class GridItem extends StatelessWidget {
       product.check = !product.check;
     }
     context.read<ProductBloc>()
-      ..add(OnDeleteItemProduct(productCheck: product));
+      ..add(OnIsChecked(productCheck: product))
+      ..add(OnDeleteItemProduct(product: product));
   }
 
   Container _checked() {

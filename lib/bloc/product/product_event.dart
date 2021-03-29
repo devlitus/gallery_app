@@ -18,13 +18,13 @@ class OnAddImageAlbum extends ProductEvent {
 }
 
 class OnDeleteItemProduct extends ProductEvent {
-  final ProductModel productCheck;
+  final ProductModel product;
 
-  OnDeleteItemProduct({this.productCheck});
+  OnDeleteItemProduct({this.product});
 }
 
 class OnIsChecked extends ProductEvent {
-  final bool checked;
+  final ProductModel productCheck;
 
-  OnIsChecked(this.checked);
+  OnIsChecked({this.productCheck});
 }
