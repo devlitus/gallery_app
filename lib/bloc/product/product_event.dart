@@ -22,8 +22,3 @@ class OnDeleteItemProduct extends ProductEvent {
   OnDeleteItemProduct(this.productCheck);
 }
 
-class OnIsChecked extends ProductEvent {
-  final bool checked;
-
-  OnIsChecked(this.checked);
-}

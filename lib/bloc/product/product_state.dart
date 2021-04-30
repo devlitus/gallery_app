@@ -4,7 +4,7 @@ part of 'product_bloc.dart';
 abstract class ProductState {
   final ProductModel product;
   final List<ProductModel> products;
-  final List<ProductModel> deleteProduct;
+  final Set<String> deleteProduct;
   final String id;
 
   ProductState({
@@ -16,7 +16,7 @@ abstract class ProductState {
   copyWith({
     ProductModel product,
     List<ProductModel> products,
-    List<ProductModel> deleteProduct,
+    Set<String> deleteProduct,
     ProductModel id,
   });
 }
@@ -24,20 +24,20 @@ abstract class ProductState {
 class ProductInitial extends ProductState {
   final ProductModel product;
   final List<ProductModel> products;
-  final List<ProductModel> deleteProduct;
+  final Set<String> deleteProduct;
   final String id;
   ProductInitial({
     this.product,
     this.products,
-    List<ProductModel> deleteProduct,
+    Set<String> deleteProduct,
     this.id,
-  }) : deleteProduct = deleteProduct ?? [];
+  }) : deleteProduct = deleteProduct ?? Set();
 
   @override
   copyWith({
     ProductModel product,
     List<ProductModel> products,
-    List<ProductModel> deleteProduct,
+    Set<String> deleteProduct,
     ProductModel id,
   }) =>
       ProductInitial(

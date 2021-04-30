@@ -46,6 +46,7 @@ class CustomGrid extends StatelessWidget {
 
 class GridItem extends StatelessWidget {
   final ProductModel product;
+
   const GridItem({@required this.product});
 
   @override
@@ -88,8 +89,7 @@ class GridItem extends StatelessWidget {
   }
 
   _checkered(BuildContext context) async {
-    product.check = true;
-    print('custom ${product.check}');
+    product.check = !product.check;
     context.read<ProductBloc>().add(OnDeleteItemProduct(product));
   }
 

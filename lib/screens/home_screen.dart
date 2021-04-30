@@ -4,12 +4,8 @@ import 'package:gallery_app/bloc/product/product_bloc.dart';
 import 'package:gallery_app/models/product_model.dart';
 import 'package:gallery_app/widgets/custom_grid.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
+class HomeScreen extends StatelessWidget {
 
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     context.read<ProductBloc>().add(OnGetListProducts());
@@ -36,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _delete(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
-        if (state.product?.check ?? false) {
+        if (state.deleteProduct.isNotEmpty) {
           return IconButton(
             icon: Icon(Icons.delete),
             onPressed: () => _showDialog(context),

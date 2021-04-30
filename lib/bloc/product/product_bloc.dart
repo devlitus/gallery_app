@@ -56,7 +56,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   Stream<ProductState> _deleteItemProduct(OnDeleteItemProduct event) async* {
     final ProductModel productModel = ProductModel();
     productModel.check = event.productCheck.check;
-    print('producto bloc: ${productModel.check}');
+    if(event.productCheck.check) {
+      print (event.productCheck.check);
+      state.deleteProduct.add(event.productCheck.id);
+    } else {
+      state.deleteProduct.remove(event.productCheck.id);
+    }
     yield state.copyWith(product: productModel);
   }
 }
