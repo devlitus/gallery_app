@@ -11,7 +11,8 @@ class ProductService {
       Cloudinary('119358423775835', 'A3XEnIkTXAwVqIArCwHMU34iorE', 'djhxmjnb4');
 
   Future<List<ProductModel>> getProduct() async {
-    final resp = await http.get('$_url/productos.json');
+    final url = Uri.parse('$_url/productos.json');
+    final resp = await http.get(url);
     final Map<String, dynamic> decodedData = json.decode(resp.body);
     final List<ProductModel> products = [];
     if (decodedData?.isEmpty ?? true) return [];
@@ -24,16 +25,16 @@ class ProductService {
   }
 
   Future<bool> createProduct(ProductModel product) async {
-    final resp = await http.post('$_url/productos.json',
-        body: productModelToJson(product));
+    final url = Uri.parse('$_url/productos.json');
+    final resp = await http.post(url, body: productModelToJson(product));
     final decodedDate = json.decode(resp.body);
     print(decodedDate);
     return true;
   }
 
   Future<String> uploadImage(File image) async {
-    final resp = await _cloudinary.uploadFile(image.path,
-        resourceType: CloudinaryResourceType.image);
+    final resp = await _cloudinary.uploadFile(
+        filePath: image.path, resourceType: CloudinaryResourceType.image);
     if (resp.isSuccessful ?? false) {
       // print('urlPhoto: ${resp.secureUrl}');
     }
@@ -41,14 +42,16 @@ class ProductService {
   }
 
   Future<bool> editProduct(ProductModel product) async {
-    final resp = await http.put('$_url/productos/${product.id}.json',
-        body: productModelToJson(product));
+    final url = Uri.parse('$_url/productos/${product.id}.json');
+    final resp = await http.post(url, body: productModelToJson(product));
     final decodedDate = json.decode(resp.body);
     return true;
   }
 
   Future<bool> deleteProduct(ProductModel product) async {
-    await http.delete('$_url/productos/${product.id}.json');
+    final url = Uri.parse('$_url/productos/${product.id}.json');
+    final resp = await http.delete(url);
+
     // await _cloudinary.deleteFile(
     //     url: product.imgUrl, resourceType: CloudinaryResourceType.image);
     return true;
@@ -67,3 +70,4 @@ class ProductService {
     return false;
   }
 }
+

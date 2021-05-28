@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:gallery_app/services/product_service.dart';
 import 'package:meta/meta.dart';
 
@@ -56,8 +57,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   Stream<ProductState> _deleteItemProduct(OnDeleteItemProduct event) async* {
     final ProductModel productModel = ProductModel();
     productModel.check = event.productCheck.check;
-    if(event.productCheck.check) {
-      print (event.productCheck.check);
+    final listProd = _productService.getProduct();
+    final listTemp = [];
+
+    if (productModel.check) {
+      listTemp.add({event.productCheck.id, event.productCheck.imgUrl});
+      listTemp.forEach((el) => print(el));
+      print(listTemp.length);
+      // print(event.productCheck.id);
+      // print(event.productCheck.imgUrl);
       state.deleteProduct.add(event.productCheck.id);
     } else {
       state.deleteProduct.remove(event.productCheck.id);

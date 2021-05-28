@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gallery_app/bloc/product/product_bloc.dart';
 import 'package:gallery_app/models/product_model.dart';
+import 'package:gallery_app/services/product_service.dart';
 import 'package:gallery_app/widgets/custom_grid.dart';
 
 class HomeScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     context.read<ProductBloc>().add(OnGetListProducts());
@@ -44,28 +44,38 @@ class HomeScreen extends StatelessWidget {
   }
 
   Future<void> _showDialog(BuildContext context) async {
+    final bloc = context.read<ProductBloc>();
+    final service = ProductService();
     return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Eliminar Imagen !!!'),
-          content: Text('¿Seguro que quieres eliminarlo estas imagenes?'),
-          actions: [
-            Row(
-              children: [
-                TextButton(onPressed: (){
-                  Navigator.pop(context);
-                }, child: Text('SI')),
-                TextButton(onPressed: (){
-                  Navigator.pop(context);
-                }, child: Text('NO')),
-              ],
-            )
-          ],
-        );
-      }
-    );
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Eliminar Imagen !!!'),
+            content: Text('¿Seguro que quieres eliminarlo estas imagenes?'),
+            actions: [
+              Row(
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        bloc.state.deleteProduct.forEach((element) {
+                          print(element);
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text('SI')),
+                  TextButton(
+                      onPressed: () {
+                        bloc.state.deleteProduct.clear();
+                        bloc.add(OnGetListProducts());
+                        Navigator.pop(context, true);
+                      },
+                      child: Text('NO')),
+                ],
+              )
+            ],
+          );
+        });
   }
 }
 
